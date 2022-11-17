@@ -1,0 +1,24 @@
+DROP TABLE passenger;
+CREATE TABLE passenger(passengerID integer primary key);
+
+DROP TABLE CabDriver;
+
+CREATE TABLE CabDriver(cabDriverID integer, VendorID integer, unique(cabDriverID, VendorID));
+
+DROP TABLE Payment;
+CREATE TABLE payment(paymentID integer, payment_type integer, tip_amount float, tolls_amount float, improvement_surcharge float, mta_tax float, extra float);
+ALTER TABLE Payment add constraint pk_payment primary key(paymentID);
+
+
+CREATE TABLE Trip(tripID integer, doLocationID integer, passengerCount float, puLocationID integer, month integer, year integer, RateCodeID float, storeAndFwdFlag varchar(1), tpedPickupDateTime timestamp, tpepDropoffDateTime timestamp, cabDriverID integer); 
+ALTER TABLE Trip add constraint trip_pk primary key(tripID);
+
+
+CREATE TABLE PassengerToTrip(passengerID integer, tripID integer, paymentID integer);
+
+Alter table PassengerToTrip add constraint PTP_fk foreign key (passengerID) references passenger (passengerID);
+
+Alter table PassengerToTrip add constraint tripID_fk foreign key (tripID) references Trip (tripID);
+
+Alter table PassengerToTrip add constraint payment_fk foreign key (paymentID) references Payment(paymentID);
+
