@@ -15,22 +15,23 @@ def generate_ids(data):
 def divide_schemas(data, save_dir='./preprocessed_data'):
     os.makedirs(save_dir, exist_ok=True)
     passengerToTrip = data[['tripID', 'cabDriverID', 'paymentID']].drop_duplicates()
-    passengerToTrip.to_csv(os.path.join(save_dir, 'passenger_to_trip.csv'))
+    passengerToTrip.to_csv(os.path.join(save_dir, 'passenger_to_trip.csv'), index=False)
     passenger = data[['passengerID']].drop_duplicates()
-    passenger.to_csv(os.path.join(save_dir, 'passenger.csv'))
+    passenger.to_csv(os.path.join(save_dir, 'passenger.csv'), index=False)
     cabDriver = data[['cabDriverID', 'VendorID']]
     
     cabDriver = cabDriver.drop_duplicates()
-    cabDriver.to_csv(os.path.join(save_dir, 'cabdriver.csv'))
+    cabDriver.to_csv(os.path.join(save_dir, 'cabdriver.csv'), index=False)
     payment = data[['paymentID', 'payment_type', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'mta_tax', 'extra']]
     payment = payment.drop_duplicates()
-    payment.to_csv(os.path.join(save_dir, 'payment.csv'))
+    payment.to_csv(os.path.join(save_dir, 'payment.csv'), index=False)
     passengerToTrip = data[['passengerID', 'tripID', 'paymentID']]
     passengerToTrip = passengerToTrip.drop_duplicates()
-    passengerToTrip.to_csv(os.path.join(save_dir, 'passenger_to_trip.csv'))
+    passengerToTrip.to_csv(os.path.join(save_dir, 'passenger_to_trip.csv'), index=False)
     trip = data[['tripID', 'doLocationID', 'passengerCount', 'puLocationID', 'month', 'year', 'RatecodeID', 'storeAndFwdFlag', 'tpedPickupDateTime', 'tpepDropoffDateTime', 'cabDriverID']]
     trip.rename({"month": "puMonth", "year": "puYear"})
-    trip.to_csv(os.path.join(save_dir, 'trip.csv'))
+    trip.to_csv(os.path.join(save_dir, 'trip.csv'), index=False)
+    
     
 def read_data():
     files = glob.glob('./raw-data/*')
@@ -41,6 +42,7 @@ def read_data():
     return final_data
 
 data = read_data()
+data.reset_index(drop=True, inplace=True)
 data = data.rename(columns= {"VendorId": "vendorID", "DOLocationID": "doLocationID", "passenger_count": "passengerCount", "PULocationID": "puLocationID", "DOLocationID": "doLocationID", "month": "puMonth", "year": "puYear", "RateCodeID": "rateCodeID", "store_and_fwd_flag": "storeAndFwdFlag","tpep_dropoff_datetime": "tpepDropoffDateTime", "tpep_pickup_datetime": "tpedPickupDateTime" })
 
 
