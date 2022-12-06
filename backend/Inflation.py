@@ -1,4 +1,4 @@
-from SqlConnector import get_connection
+from SqlConnector import get_connection4
 
 def execute_fetch(conn, query):
     conn.execute(query)
@@ -32,6 +32,7 @@ ORDER BY pickupyear DESC
     """
     data = execute_fetch(c, query)
     cursor.close()
+    print(data)
     return data
 
     

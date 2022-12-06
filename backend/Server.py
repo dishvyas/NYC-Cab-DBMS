@@ -5,6 +5,7 @@ from FetchRelationCount import get_count
 from COVIDcases import fetch_COVID_taxi
 from PaymentMethods import fetch_diff_payment_types
 from holidays import holiday
+from Inflation import inflation
 import json
 
 app = Flask(__name__)
@@ -42,6 +43,12 @@ def fetch_COVID_taxi_controller():
     trip_data = fetch_COVID_taxi()
     #print(trip_data)
     return render_template("COVID.html",trip_data=trip_data)
+
+@app.route("/INFLATION", methods=['GET'])
+def fetch_Inflation_taxi_controller():
+    trip_data = inflation()
+    print(trip_data)
+    return render_template("Inflation.html",trip_data=trip_data)
 
 @app.route("/payment", methods=['GET'])
 def fetch_diff_payment_types_controller():
