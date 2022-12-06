@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js"></script>
+    <style type="text/css">      
+      html, body, #container { 
+        width: 100%; height: 100%; margin: 0; padding: 0; 
+      } 
+    </style>
+    <title>Query for COVID-19 cases vs NYC Taxicab Trips </title>
+  </head>
+  <body>
+    
+    <div id="root"></div>
+    <div id="container"></div>
+    <script type="text/javascript">
+      anychart.onDocumentReady(function () {
+        //console.log("WE almost have data");
+        var data = {{trip_data}};
+        //console.log("WE've got data");
+        //console.log(trip_data);
+
+        // create a data set
+        var dataSet = anychart.data.set(data);
+
+        // map the data for all series
+        var firstSeriesData = dataSet.mapAs({x: 0, value: 1});
+        var secondSeriesData = dataSet.mapAs({x: 0, value: 2});
+        //var thirdSeriesData = dataSet.mapAs({x: 0, value: 3});
+
+        // create a line chart
+        var chart = anychart.line();
+
+        // create the series and name them
+        var firstSeries = chart.line(firstSeriesData);
+        firstSeries.name("COVID-19 cases");
+        var secondSeries = chart.line(secondSeriesData);
+        secondSeries.name("NYC Taxicab rides");
+        // var thirdSeries = chart.line(thirdSeriesData);
+        // thirdSeries.name("Thanksgiving");
+
+        chart.legend().enabled(true);
+        
+        chart.Y
+        // add a title
+        chart.title("Effect of COVID-19 on NYC Taxicabs");
+  
+        // specify where to display the chart
+        chart.container("container");
+  
+        // draw the resulting chart
+        chart.draw();
+  
+      });
+    </script>
+  </body>
+</html>
