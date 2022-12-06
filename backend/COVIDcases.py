@@ -10,14 +10,18 @@ def execute_fetch(conn, query):
     conn.close()
     return data
 
-def fetch_COVID_taxi():
+def fetch_COVID_taxi(params):
     cursor = get_connection3()
     c = cursor.cursor()
 
-    start_month = '1'
-    start_year = '2018'
-    end_month = '9'
-    end_year = '2022'
+    # start_month = '1'
+    # start_year = '2018'
+    # end_month = '9'
+    # end_year = '2022'
+    start_month = params['start_month']
+    start_year = params['start_year']
+    end_month = params['end_month']
+    end_year = params['end_year']
     first_bound = start_year + '-' + start_month + '-01'
     
     if end_month == '2':
