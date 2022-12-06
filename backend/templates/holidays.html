@@ -35,11 +35,30 @@
     <title>Query for cab rides during major holidays</title>
   </head>
   <body>
-    
-
-    <div id="root"></div>
-    <div style = "position:relative; top:70px;" id="container"></div>
+    <!-- <header>  
+      <nav>  
+          <ul>  
+              <li>  <a href="http://127.0.0.1:3000/home"> Home </a>  </li>  
+              <li>  <a href="/COVID_form">COVID</a> </li>  
+              <li>  <a href="/payment_form">Payment Methods</a>  </li>  
+              <li>  <a href="/holidays">Holidays</a>  </li>  
+          </ul>  
+      </nav>  
+    </header>  -->
+    <div style = "position:relative; top:70px; text-align: center;" id="container">
+    <button class="ui teal tiny button" onclick="myFunction()">Count</button>
+    <p id ="root"></p>
+    </div>
     <script>
+      function myFunction() {
+        var temp = {{rowcount|tojson|safe}};
+        var data = JSON.stringify(temp);
+        var thenum = data.replace( /^\D+/g, '');
+        var num="";
+        for(var i=0;i<6;i++)
+          num+=thenum[i];
+        document.getElementById("root").innerHTML = num;
+      }
       anychart.onDocumentReady(function () {
         var data = [
           ["2014", 7952, 6606, 5368],
