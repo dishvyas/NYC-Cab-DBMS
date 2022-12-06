@@ -60,5 +60,5 @@ def fetch_diff_payment_types(params):
 
     data = execute_fetch(c, query)
     cursor.close()
-    print(data)
+    #print(data)
     return data
