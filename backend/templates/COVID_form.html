@@ -32,16 +32,7 @@
     </style>   
     </Head>  
     <body>   
-        <header>  
-            <nav>  
-                <ul>  
-                    <li>  <a href="http://127.0.0.1:3000/home"> Home </a>  </li>  
-                    <li>  <a href="/COVID_form">COVID</a> </li>  
-                    <li>  <a href="/payment_form">Payment Methods</a>  </li>  
-                    <li>  <a href="/holidays">Holidays</a>  </li>  
-                </ul>  
-            </nav>  
-        </header> 
+        
         <form action = "{{ url_for('fetch_COVID_taxi_controller') }}" method = "POST">
             <p>Start Month(Enter 1-12) <input type = "text" name = "start_month" /></p>
             <p>Start Year(Enter 2018-2022)<input type = "text" name = "start_year" /></p>

@@ -35,9 +35,14 @@ def fetch_trip_to_pollutants_controller():
     print(parameters)
     return fetch_trip_to_pollutants(parameters)
 
-@app.route("/fetch_count", methods=['GET'])
-def get_row_count():
-    return {"count": get_count()}
+@app.route("/fetch_count/<query>", methods=['GET'])
+def get_row_count(query):
+    if(query == 'query4'):
+        tables = ['TRIP', 'EmployementStats']
+    if(query == 'query5'):
+        tables = ['TRIP', 'CO', 'NO2', 'Ozone']
+    
+    return {"count": get_count(tables)}
 
 @app.route("/holidays", methods=['GET'])
 def hol():
