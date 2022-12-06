@@ -3,8 +3,8 @@ from flask_cors import CORS
 from TripToEmployment import fetch_trips_to_employment_map, fetch_employment_details
 from TripToPollutants import fetch_trip_to_pollutants
 from FetchRelationCount import get_count
-from COVIDcases import fetch_COVID_taxi
-from PaymentMethods import fetch_diff_payment_types
+from COVIDcases import fetch_COVID_count, fetch_COVID_taxi
+from PaymentMethods import fetch_payment_count, fetch_diff_payment_types
 from holidays import holiday
 import json
 
@@ -59,7 +59,8 @@ def fetch_COVID_taxi_controller():
     if request.method == 'POST':
         params = request.form
         trip_data = fetch_COVID_taxi(params)
-        return render_template("COVID.html",trip_data=trip_data)
+        trip_count = fetch_COVID_count()
+        return render_template("COVID.html",trip_data=trip_data, trip_count=trip_count)
 
 @app.route("/payment_form", methods=['POST','GET'])
 def form_info2():
@@ -70,7 +71,8 @@ def fetch_diff_payment_types_controller():
     if request.method == 'POST':
         params = request.form
         pay_data = fetch_diff_payment_types(params)
-        return render_template("payment.html",pay_data=pay_data)
+        pay_count = fetch_payment_count()
+        return render_template("payment.html",pay_data=pay_data, pay_count=pay_count)
 
 if __name__ == '__main__':
     app.run(debug='true')

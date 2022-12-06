@@ -30,12 +30,26 @@
         header li a {  
         color: peachpuff;  
         text-decoration: none;  
+        }
+        button {
+            position: absolute;
+            top: 90%;
+            left: 30%;
+            font-size: 15px;
+            padding: 10px;
+        }
+        input {
+            position: absolute;
+            top: 90%;
+            left: 43%;
+            font-size: 15px;
+            padding: 10px;
         }  
     </style>
     <title>Query for COVID-19 cases vs NYC Taxicab Trips </title>
   </head>
   <body>
-    <header>  
+    <!-- <header>  
         <nav>  
             <ul>  
                 <li>  <a href="http://127.0.0.1:3000/home"> Home </a>  </li>  
@@ -44,7 +58,7 @@
                 <li>  <a href="/holidays">Holidays</a>  </li>  
             </ul>  
         </nav>  
-    </header> 
+    </header>  -->
   
     <div id="root"></div>
     <div style = "position:relative; top:70px;" id="container"></div>
@@ -95,5 +109,20 @@
   
       });
     </script>
+
+    <button id='action' onclick="b1()">Press Here for # of Tuples</button>
+    <input type="text" value="" id="getCount">
+   
+   <script type="text/javascript">
+
+       function b1(){
+           Count_val = Object.values({{pay_count|tojson|safe}});
+           //console.log(Count_val);
+           var act_count = [];
+           act_count.push(Count_val[0].TOTAL);
+           console.log(act_count[0]);
+           document.getElementById("getCount").value = act_count[0];
+       }
+   </script>
   </body>
 </html>
