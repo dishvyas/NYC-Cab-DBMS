@@ -19,23 +19,20 @@
     <div id="container"></div>
     <script type="text/javascript">
       anychart.onDocumentReady(function () {
-        //console.log("WE almost have data");
-        var data = {{ trip_data|tojson|safe }};
-        //var ndata = JSON.parse(data);
-        //console.log(ndata);
+        var data = {{ pay_data|tojson|safe }};
         var data_vals = Object.values(data);
 
         var new_d = [];
         var month_year = [];
-        var cases = [];
-        var trips = [];
+        var pm = [];
+        var cnt_pm = [];
 
         for (item of data_vals){
             //console.log(item);
             //console.log(item.MONTH_YEAR);
-            new_d.push([item.MONTH_YEAR, item.TOTAL_CASES, item.TRIPS*2.5]);
-            cases.push(item.TOTAL_CASES);
-            trips.push(item.TRIPS);
+            new_d.push([item.MONTH_YEAR, item.PAYMENT_1, item.PAYMENT_2]);
+            //pm.push(item.PAYMENTTYPE);
+            //cnt_pm.push(item.COUNT(PAYMENTTYPE));
         }
 
         console.log(month_year);
@@ -46,30 +43,27 @@
 
         // map the data for all series
         var firstSeriesData = dataSet.mapAs({x: 0, value: 1});
-        //console.log(typeof firstSeriesData);
+        console.log(typeof firstSeriesData);
         var secondSeriesData = dataSet.mapAs({x: 0, value: 2});
-        //var thirdSeriesData = dataSet.mapAs({x: 0, value: 3});
 
         // create a line chart
         var chart = anychart.line();
 
         //Label x and y axes
         chart.xAxis().title('MONTH_YEAR');
-        chart.yAxis().title('Number of Cases/Trips');
+        chart.yAxis().title('Number of Payments');
 
         // create the series and name them
         var firstSeries = chart.line(firstSeriesData);
-        firstSeries.name("COVID-19 cases");
+        firstSeries.name("Credit Card Payments");
         var secondSeries = chart.line(secondSeriesData);
-        secondSeries.name("NYC Taxicab rides");
-        // var thirdSeries = chart.line(thirdSeriesData);
-        // thirdSeries.name("Thanksgiving");
+        secondSeries.name("Cash Payments");
 
         chart.legend().enabled(true);
 
         chart.Y
         // add a title
-        chart.title("Effect of COVID-19 on NYC Taxicabs");
+        chart.title("Change of Payment Methods' Usage over Time");
   
         // specify where to display the chart
         chart.container("container");
