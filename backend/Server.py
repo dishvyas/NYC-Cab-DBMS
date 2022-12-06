@@ -5,7 +5,7 @@ from TripToPollutants import fetch_trip_to_pollutants
 from FetchRelationCount import get_count
 from COVIDcases import fetch_COVID_taxi
 from PaymentMethods import fetch_diff_payment_types
-from holidays import holiday
+from holidays import holiday, rowCount
 import json
 
 app = Flask(__name__)
@@ -42,8 +42,9 @@ def get_row_count():
 @app.route("/holidays", methods=['GET'])
 def hol():
     hol=holiday()
-    # print(hol)
-    return render_template("holidays.html")
+    rowcount=rowCount()
+    print(rowcount)
+    return render_template("holidays.html", rowcount=rowcount)
 
 @app.route("/COVID_form", methods=['POST','GET'])
 def form_info():
