@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js"></script>
+    <style type="text/css">
+      html, body, #container {
+        width: 100%; height: 100%; margin: 0; padding: 0;
+      }
+    </style>
+    <title>Query for COVID-19 cases vs NYC Taxicab Trips </title>
+  </head>
+  <body>
+
+    <div id="root"></div>
+    <div id="container"></div>
+    <script type="text/javascript">
+      anychart.onDocumentReady(function () {
+        var data = {{ pay_data|tojson|safe }};
+        var data_vals = Object.values(data);
+
+        var new_d = [];
+        var month_year = [];
+        var pm = [];
+        var cnt_pm = [];
+
+        for (item of data_vals){
+            //console.log(item);
+            //console.log(item.MONTH_YEAR);
+            new_d.push([item.PICKUPYEAR, item.SALARYPERMONTH]);
+            //pm.push(item.SALARYPERMONTH);
+            //cnt_pm.push(item.COUNT(SALARYPERMONTH));
+        }
+
+
+
+        // create a data set
+        var dataSet = anychart.data.set(new_d);
+        console.log(dataSet);
+
+        // map the data for all series
+        var firstSeriesData = dataSet.mapAs({x: 0, value: 1});
+        console.log(typeof firstSeriesData);
+        var secondSeriesData = [
+        [2014,3229.83],
+         [2015, 3270.50],
+          [2016, 3340.24],
+           [2017, 3421.82],
+            [2018,3483.82 ],
+             [2019, 3526.80],
+              [2020,3692.49],
+               [2021,4060.99]
+        ];
+
+        // create a line chart
+        var chart = anychart.line();
+
+        //Label x and y axes
+        chart.xAxis().title('Year');
+        chart.yAxis().title('Average Income in $ per month');
+
+        // create the series and name them
+        var firstSeries = chart.line(firstSeriesData);
+        firstSeries.name("Average Income Per Month");
+        var secondSeries = chart.line(secondSeriesData);
+        secondSeries.name("Average Income Expected With Inflation");
+        chart.legend().enabled(true);
+
+        chart.Y
+        // add a title
+        chart.title("Average Income of Drivers Over Time");
+
+        // specify where to display the chart
+        chart.container("container");
+
+        // draw the resulting chart
+        chart.draw();
+
+      });
+    </script>
+  </body>
+</html>
