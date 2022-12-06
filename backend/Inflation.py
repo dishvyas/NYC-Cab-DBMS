@@ -11,13 +11,12 @@ def execute_fetch(conn, query):
 def inflation(filters):
     cursor = get_connection4()
     c = cursor.cursor()
-    
-    duration = filters['duration']
-    start_date = filters['start_date']
-    end_date = filters['end_date']
+
+    start_date = filters['start_year']
+    end_date = filters['end_year']
     year = ",".join([start_date.split('-')[-1], end_date.split('-')[-1]])
     query = f"""SELECT EXTRACT(year FROM tpedpickupdatetime) AS pickupyear, 
-AVG(Total_Amount) * COUNT(TRIPID)* 200/COUNT(CabdriverID) as SalaryPerMonth
+AVG(Total_Amount) * COUNT(TRIPID)* 230/COUNT(CabdriverID) as SalaryPerMonth
 FROM (
 SELECT Total_Amount, TripID,cabdriver.CabdriverID, trip.tpedpickupdatetime,infl FROM PAYMENT
 JOIN TRIP
@@ -27,8 +26,7 @@ ON trip.cabdriverid = cabdriver.cabdriverid
 JOIN Inflation
 ON inflationyear = EXTRACT(year FROM tpedpickupdatetime))
 GROUP BY EXTRACT(YEAR FROM tpedpickupdatetime)
-ORDER BY pickupyear DESC
-;
+ORDER BY pickupyear ASC
     """
     data = execute_fetch(c, query)
     cursor.close()

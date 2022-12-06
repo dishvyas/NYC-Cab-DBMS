@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <form action = "{{ url_for('fetch_inflation_controller') }}" method = "POST">
+            <p>Start Year (Minimum: 2014) <input type = "text" name = "start_year" /></p>
+            <p>End Year (Maximum: 2021) <input type ="text" name = "end_year" /></p>
+            <p><input type = "submit" value = "submit" /></p>
+         </form>
+    </body>
+</html>

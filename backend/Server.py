@@ -4,6 +4,7 @@ from TripToEmployment import fetch_trips_to_employment_map, fetch_employment_det
 from FetchRelationCount import get_count
 from COVIDcases import fetch_COVID_taxi
 from PaymentMethods import fetch_diff_payment_types
+from Inflation import inflation
 from holidays import holiday
 import json
 
@@ -58,6 +59,17 @@ def fetch_diff_payment_types_controller():
         params = request.form
         pay_data = fetch_diff_payment_types(params)
         return render_template("payment.html",pay_data=pay_data)
+
+@app.route("/inflation_form", methods=['POST','GET'])
+def form_info3():
+    return render_template("inflation_form.html")
+
+@app.route("/inflation", methods=['POST','GET'])
+def fetch_inflation_controller():
+    if request.method == 'POST':
+        params = request.form
+        pay_data = inflation(params)
+        return render_template("inflation.html",pay_data=pay_data)
 
 if __name__ == '__main__':
     app.run(debug='true')
