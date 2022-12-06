@@ -7,7 +7,7 @@ from COVIDcases import fetch_COVID_count, fetch_COVID_taxi
 from PaymentMethods import fetch_payment_count, fetch_diff_payment_types
 from holidays import holiday, rowCount
 import json
-
+import time
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -37,11 +37,21 @@ def fetch_trip_to_pollutants_controller():
 
 @app.route("/fetch_count/<query>", methods=['GET'])
 def get_row_count(query):
+    if(query == 'query6'):
+        tables = ['PAYMENT', 'CABDRIVER', 'TRIP']
     if(query == 'query4'):
         tables = ['TRIP', 'EmployementStats']
     if(query == 'query5'):
         tables = ['TRIP', 'CO', 'NO2', 'Ozone']
-    
+    if(query == 'query3'):
+        tables = ['COVID', 'TRIP']
+    if(query == 'query2'):
+        tables = ['Payment', 'Trip', 'PassengerToTrip']
+    if(query == 'query1'):
+        tables = ['Trip', 'PassengertoTrip', 'Payment']
+    else:
+        tables = ['PAYMENT', 'CABDRIVER', 'TRIP', 'EmployementStats', 'CO', 'NO2', 'Ozone', 'PassengerToTrip']
+
     return {"count": get_count(tables)}
 
 @app.route("/holidays", methods=['GET'])

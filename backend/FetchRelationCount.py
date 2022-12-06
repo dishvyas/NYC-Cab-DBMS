@@ -27,7 +27,7 @@ def get_count(tables):
             out_query += f"{inner_variable}{index}.COUNT "
 
     query = f"SELECT ({out_query}) as COUNT FROM {inner_query}"
-
+    print(query)
     data = execute_fetch(c, query)
     cursor.close()
     return data
