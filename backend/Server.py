@@ -37,18 +37,27 @@ def hol():
     # print(hol)
     return render_template("holidays.html")
 
-@app.route("/COVID", methods=['GET'])
-def fetch_COVID_taxi_controller():
-    trip_data = fetch_COVID_taxi()
-    #print(trip_data)
-    return render_template("COVID.html",trip_data=trip_data)
+@app.route("/COVID_form", methods=['POST','GET'])
+def form_info():
+    return render_template("COVID_form.html")
 
-@app.route("/payment", methods=['GET'])
+@app.route("/COVID", methods=['POST','GET'])
+def fetch_COVID_taxi_controller():
+    if request.method == 'POST':
+        params = request.form
+        trip_data = fetch_COVID_taxi(params)
+        return render_template("COVID.html",trip_data=trip_data)
+
+@app.route("/payment_form", methods=['POST','GET'])
+def form_info2():
+    return render_template("payment_form.html")
+
+@app.route("/payment", methods=['POST','GET'])
 def fetch_diff_payment_types_controller():
-    print("HERE HERE HERE HERE HERE")
-    pay_data = fetch_diff_payment_types()
-    print('We got the pay data')
-    return render_template("payment.html",result=pay_data)
+    if request.method == 'POST':
+        params = request.form
+        pay_data = fetch_diff_payment_types(params)
+        return render_template("payment.html",pay_data=pay_data)
 
 if __name__ == '__main__':
     app.run(debug='true')
