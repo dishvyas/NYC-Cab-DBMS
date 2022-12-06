@@ -7,3 +7,7 @@ def get_connection():
 def get_connection2():
     cursor = cx_Oracle.connect(user="vyasdishant",password="tlGQDuBUhZH7QpW2qBeKRr27",dsn="oracle.cise.ufl.edu/ORCL")
     return cursor
+
+def get_connection3():
+    cursor = cx_Oracle.connect(user="kbudham",password="pTi0gREbUqoycBaopoLzPni0",dsn="oracle.cise.ufl.edu/ORCL")
+    return cursor
