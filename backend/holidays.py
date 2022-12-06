@@ -10,12 +10,22 @@ def execute_fetch(conn, query):
     conn.close()
     return data
 
-
+def rowCount():
+    db = get_connection2()
+    d = db.cursor()
+    count = f"""
+    select count(*) from trip
+    """
+    ch = execute_fetch(d, count)
+    return ch
+    # print(ch)
+    
 
 def holiday():
     ch=christ()
     hw=hallow()
     th=thanks()
+    # rowCount()
     # print(hw)
     # print(type(ch))
     # d.close() 
