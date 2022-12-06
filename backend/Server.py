@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from TripToEmployment import fetch_trips_to_employment_map, fetch_employment_details
+from TripToPollutants import fetch_trip_to_pollutants
 from FetchRelationCount import get_count
 from COVIDcases import fetch_COVID_taxi
 from PaymentMethods import fetch_diff_payment_types
@@ -24,8 +25,15 @@ def fetch_trips_to_employment_map_controller():
 
 @app.route("/fetch_employment_details", methods=['POST'])
 def fetch_employment_details_controller():
+    print('hitting server')
     parameters = request.get_json()
     return fetch_employment_details(parameters)
+
+@app.route("/fetch_trip_to_pollutants", methods=['POST'])
+def fetch_trip_to_pollutants_controller():
+    parameters = request.get_json()
+    print(parameters)
+    return fetch_trip_to_pollutants(parameters)
 
 @app.route("/fetch_count", methods=['GET'])
 def get_row_count():
