@@ -7,8 +7,11 @@ from COVIDcases import fetch_COVID_taxi
 from PaymentMethods import fetch_diff_payment_types
 from Inflation import inflation
 from holidays import holiday
+from COVIDcases import fetch_COVID_count, fetch_COVID_taxi
+from PaymentMethods import fetch_payment_count, fetch_diff_payment_types
+from holidays import holiday, rowCount
 import json
-
+import time
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -36,15 +39,31 @@ def fetch_trip_to_pollutants_controller():
     print(parameters)
     return fetch_trip_to_pollutants(parameters)
 
-@app.route("/fetch_count", methods=['GET'])
-def get_row_count():
-    return {"count": get_count()}
+@app.route("/fetch_count/<query>", methods=['GET'])
+def get_row_count(query):
+    if(query == 'query6'):
+        tables = ['PAYMENT', 'CABDRIVER', 'TRIP']
+    if(query == 'query4'):
+        tables = ['TRIP', 'EmployementStats']
+    if(query == 'query5'):
+        tables = ['TRIP', 'CO', 'NO2', 'Ozone']
+    if(query == 'query3'):
+        tables = ['COVID', 'TRIP']
+    if(query == 'query2'):
+        tables = ['Payment', 'Trip', 'PassengerToTrip']
+    if(query == 'query1'):
+        tables = ['Trip', 'PassengertoTrip', 'Payment']
+    else:
+        tables = ['PAYMENT', 'CABDRIVER', 'TRIP', 'EmployementStats', 'CO', 'NO2', 'Ozone', 'PassengerToTrip']
+
+    return {"count": get_count(tables)}
 
 @app.route("/holidays", methods=['GET'])
 def hol():
     hol=holiday()
-    # print(hol)
-    return render_template("holidays.html")
+    rowcount=rowCount()
+    print(rowcount)
+    return render_template("holidays.html", rowcount=rowcount)
 
 @app.route("/COVID_form", methods=['POST','GET'])
 def form_info():
@@ -55,7 +74,8 @@ def fetch_COVID_taxi_controller():
     if request.method == 'POST':
         params = request.form
         trip_data = fetch_COVID_taxi(params)
-        return render_template("COVID.html",trip_data=trip_data)
+        trip_count = fetch_COVID_count()
+        return render_template("COVID.html",trip_data=trip_data, trip_count=trip_count)
 
 @app.route("/payment_form", methods=['POST','GET'])
 def form_info2():
@@ -66,7 +86,8 @@ def fetch_diff_payment_types_controller():
     if request.method == 'POST':
         params = request.form
         pay_data = fetch_diff_payment_types(params)
-        return render_template("payment.html",pay_data=pay_data)
+        pay_count = fetch_payment_count()
+        return render_template("payment.html",pay_data=pay_data, pay_count=pay_count)
 
 @app.route("/inflation_form", methods=['POST','GET'])
 def form_info3():

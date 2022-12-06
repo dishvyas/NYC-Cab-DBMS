@@ -10,6 +10,20 @@ def execute_fetch(conn, query):
     conn.close()
     return data
 
+def fetch_COVID_count():
+    cursor = get_connection3()
+    c2 = cursor.cursor()
+    query = f"""
+    SELECT SUM(amt) as total FROM
+    (SELECT COUNT(*) as amt FROM COVID_cases
+    UNION
+    SELECT COUNT(*) FROM Trip)"""
+
+    data = execute_fetch(c2, query)
+    cursor.close()
+    return data
+
+
 def fetch_COVID_taxi(params):
     cursor = get_connection3()
     c = cursor.cursor()
