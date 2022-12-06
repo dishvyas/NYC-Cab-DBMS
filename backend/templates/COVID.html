@@ -6,49 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js"></script>
-    <style type="text/css">      
-      html, body, #container { 
-        width: 100%; height: 100%; margin: 0; padding: 0; 
-      } 
+    <style type=text/css>   
+        html, body, #container { 
+        width: 100%; height: 90%; margin: 0; padding: 0; 
+        } 
+        header {  
+        background-color: royalblue;  
+        position: fixed;  
+        left: 0;  
+        right: 0;  
+        top: 0px;  
+        height: 40px;  
+        display: flex;  
+        align-items: center;  
+        box-shadow: 0 0 25px 0 black;  
+        }  
+        header * {  
+        display: inline;  
+        }  
+        header li {  
+        margin: 20px;  
+        }  
+        header li a {  
+        color: peachpuff;  
+        text-decoration: none;  
+        }  
     </style>
     <title>Query for COVID-19 cases vs NYC Taxicab Trips </title>
   </head>
   <body>
+    <header>  
+        <nav>  
+            <ul>  
+                <li>  <a href="http://127.0.0.1:3000/home"> Home </a>  </li>  
+                <li>  <a href="/COVID_form">COVID</a> </li>  
+                <li>  <a href="/payment_form">Payment Methods</a>  </li>  
+                <li>  <a href="/holidays">Holidays</a>  </li>  
+            </ul>  
+        </nav>  
+    </header> 
   
     <div id="root"></div>
-    <div id="container"></div>
+    <div style = "position:relative; top:70px;" id="container"></div>
     <script type="text/javascript">
       anychart.onDocumentReady(function () {
-        //console.log("WE almost have data");
         var data = {{ trip_data|tojson|safe }};
-        //var ndata = JSON.parse(data);
-        //console.log(ndata);
+
         var data_vals = Object.values(data);
 
         var new_d = [];
-        var month_year = [];
-        var cases = [];
-        var trips = [];
 
         for (item of data_vals){
-            //console.log(item);
-            //console.log(item.MONTH_YEAR);
-            new_d.push([item.MONTH_YEAR, item.TOTAL_CASES, item.TRIPS*2.5]);
-            cases.push(item.TOTAL_CASES);
-            trips.push(item.TRIPS);
+            new_d.push([item.MONTH_YEAR, item.TOTAL_CASES/5, item.TRIPS]);
         }
-
-        console.log(month_year);
 
         // create a data set
         var dataSet = anychart.data.set(new_d);
-        console.log(dataSet);
 
         // map the data for all series
         var firstSeriesData = dataSet.mapAs({x: 0, value: 1});
-        //console.log(typeof firstSeriesData);
         var secondSeriesData = dataSet.mapAs({x: 0, value: 2});
-        //var thirdSeriesData = dataSet.mapAs({x: 0, value: 3});
 
         // create a line chart
         var chart = anychart.line();
@@ -62,8 +79,6 @@
         firstSeries.name("COVID-19 cases");
         var secondSeries = chart.line(secondSeriesData);
         secondSeries.name("NYC Taxicab rides");
-        // var thirdSeries = chart.line(thirdSeriesData);
-        // thirdSeries.name("Thanksgiving");
 
         chart.legend().enabled(true);
 

@@ -32,18 +32,20 @@ def fetch_COVID_taxi(params):
         second_bound = end_year + '-' + end_month + '-31'
 
     query = f"""
-    SELECT (CASES.MONTH || '-' || CASES.YEAR) month_year,Total_Cases,Trips FROM
+    SELECT (TAXIS.MONTH || '-' || TAXIS.YEAR) month_year,Total_Cases,Trips FROM
         (SELECT EXTRACT(MONTH FROM DATE_OF_INTEREST) AS MONTH, EXTRACT(YEAR FROM DATE_OF_INTEREST) AS YEAR, SUM(CASE_COUNT) AS Total_Cases
         FROM COVID_CASES
         WHERE DATE_OF_INTEREST BETWEEN TO_CHAR(TO_DATE('{first_bound}','YYYY-MM-DD'),'DD-MON-YYYY') AND TO_CHAR(TO_DATE('{second_bound}','YYYY-MM-DD'),'DD-MON-YYYY')
         GROUP BY EXTRACT(MONTH FROM DATE_OF_INTEREST), EXTRACT(YEAR FROM DATE_OF_INTEREST)
         ORDER BY YEAR ASC, MONTH ASC) CASES
-    INNER JOIN
+    RIGHT JOIN
         (SELECT COUNT(*) AS TRIPS, MONTH, YEAR
         FROM TRIP
+        WHERE YEAR >= {start_year} AND YEAR <= {end_year}
         GROUP BY MONTH, YEAR
         ORDER BY YEAR ASC, MONTH ASC) TAXIS
-    ON TAXIS.MONTH = CASES.MONTH AND TAXIS.YEAR = CASES.YEAR"""
+    ON TAXIS.MONTH = CASES.MONTH AND TAXIS.YEAR = CASES.YEAR
+    ORDER BY TAXIS.YEAR ASC, TAXIS.MONTH ASC"""
 
     data = execute_fetch(c, query)
     cursor.close()

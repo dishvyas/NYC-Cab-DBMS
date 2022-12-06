@@ -11,7 +11,7 @@ def execute_fetch(conn, query):
 def fetch_trips_to_employment_map(filters):
     cursor = get_connection()
     c = cursor.cursor()
-    
+    k = "AND %s='%s'"%('"MONTH"', 'Dec')
     duration = filters['duration']
     start_date = filters['start_date']
     end_date = filters['end_date']
@@ -58,7 +58,7 @@ FROM
                FROM
                   EmployementStats 
                WHERE
-                  "YEAR" in  ({year})
+                  "YEAR" in  ({year})  {k if (duration == 'year') else ""}
             )
          GROUP BY
             {'"MONTH",' if(duration == 'month') else ""}
@@ -70,6 +70,7 @@ FROM
         
     ORDER BY T1.YEAR_NAME {",T1.month_number" if(duration=='month') else ""}  ASC
     """
+    print(query)
     data = execute_fetch(c, query)
     cursor.close()
     return data
@@ -77,6 +78,7 @@ FROM
     
 def fetch_employment_details(parameters):
     cursor = get_connection()
+    k = "AND %s='%s'"%('"MONTH"', 'Dec')
 
     c = cursor.cursor()
     duration = parameters['duration']
@@ -93,8 +95,9 @@ def fetch_employment_details(parameters):
     FROM
         employementstats
     WHERE
-        {f"month = '{month}' AND " if (duration == "month") else ""}
         year = '{year}'
+        {f" AND month = '{month}' " if (duration == "month") else k}
+
          
     GROUP BY
         industry_title,
@@ -102,7 +105,7 @@ def fetch_employment_details(parameters):
         year
         
     ORDER BY
-    employee_count DESC FETCH FIRST 20 ROWS ONLY""" 
+    employee_count DESC""" 
     print(query)
     data = execute_fetch(c, query)
     cursor.close()

@@ -1,9 +1,51 @@
 <html>
-    <body>
+    <style type=text/css>   
+        body   
+        {  
+        height: 125vh;  
+        margin-top: 80px;  
+        padding: 30px;  
+        background-size: cover;  
+        font-family: sans-serif;  
+        }  
+        header {  
+        background-color: royalblue;  
+        position: fixed;  
+        left: 0;  
+        right: 0;  
+        top: 0px;  
+        height: 40px;  
+        display: flex;  
+        align-items: center;  
+        box-shadow: 0 0 25px 0 black;  
+        }   
+        header * {  
+        display: inline;  
+        }  
+        header li {  
+        margin: 20px;  
+        }  
+        header li a {  
+        color: peachpuff;  
+        text-decoration: none;  
+        }  
+    </style>   
+    </Head>  
+    <body>   
+        <header>  
+            <nav>  
+                <ul>  
+                    <li>  <a href="http://127.0.0.1:3000/home"> Home </a>  </li>  
+                    <li>  <a href="/COVID_form">COVID</a> </li>  
+                    <li>  <a href="/payment_form">Payment Methods</a>  </li>  
+                    <li>  <a href="/holidays">Holidays</a>  </li>  
+                </ul>  
+            </nav>  
+        </header>  
         <form action = "{{ url_for('fetch_diff_payment_types_controller') }}" method = "POST">
             <p>Start Year(Enter 2018-2022)<input type = "text" name = "start_year" /></p>
             <p>End Year(Enter 2018-2022) <input type ="text" name = "end_year" /></p>
             <p><input type = "submit" value = "submit" /></p>
-         </form>
+        </form>
     </body>
 </html>
